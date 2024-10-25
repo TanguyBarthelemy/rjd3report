@@ -260,7 +260,7 @@ plot.simple_dashboard <- function(x, main = "Simple Dashboard with outliers",
          pch = NA_integer_,
          inset = c(0,1), xpd = TRUE, horiz=TRUE, bty = "n")
   par(mai = c(0.0, 0.2, 0.2, 0.4))
-  ggdemetra::siratioplot(siratio_plot, main = NULL)
+  ggdemetra3::siratioplot(siratio_plot, main = NULL)
 
 
   par(mai = c(0.4, 0.2, 0.2, 0))

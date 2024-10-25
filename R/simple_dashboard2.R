@@ -200,7 +200,7 @@ outliers_to_dates <- function(name_out){
   dates_out <- gsub("\\w. \\((.*)\\)", "\\1", name_out)
   types <- gsub(" .*", "", name_out)
   dates <- do.call(rbind, strsplit(dates_out, "-"))
-  periods <- as.numeric(as.roman(dates[,1]))
+  periods <- as.numeric(utils::as.roman(dates[,1]))
   years <- as.numeric(dates[,2])
   data.frame(year = years, period = periods, type = types)
 }
