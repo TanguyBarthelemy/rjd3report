@@ -22,7 +22,8 @@ simple_dashboard2 <- function(x, context = NULL, digits = 2,
                               columns_outliers = c("Estimate", "T-stat"),
                               n_last_outliers = 4,
                               order_outliers = c("AO", "LS", "TC", "SO"),
-                              add_obs_to_forecast = TRUE) {
+                              add_obs_to_forecast = TRUE,
+                              td_effect = NULL) {
   x <- get_jmod(x, context = context)
   if (is.null(x))
     return(NULL)
@@ -145,7 +146,12 @@ simple_dashboard2 <- function(x, context = NULL, digits = 2,
                                "None" = "#A0CD63", "orange")),
                       c(ifelse(td_res_test[,1] < 0.05,  "red", "#A0CD63"),
                         rep("white", 4)))
-
+  if (is.null(td_effect))
+    td_effect <- frequency(data_plot) == 12
+  if (!td_effect) {
+    all_tests <- all_tests[-3,]
+    color_test<- color_test[-3,]
+  }
 
   decomp_stats_color <- c(sapply(qstats, function(x) ifelse(x < 1, "#A0CD63", "red")),
                           "white",
@@ -175,7 +181,7 @@ simple_dashboard2 <- function(x, context = NULL, digits = 2,
     outliers <- round(outliers, digits_outliers)
     outliers <- data.frame(rownames(outliers),
                            outliers)
-    colnames(outliers)[1] <- sprintf("Last %i outliers", n_last_outliers)
+    colnames(outliers)[1] <- sprintf("Last %i outliers", min(n_last_outliers, nrow(outliers)))
     rownames(outliers) <- NULL
 
     outliers_color <-
